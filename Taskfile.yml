@@ -41,3 +41,12 @@ tasks:
           bun run build
           cd ..
         fi
+
+  test:
+    cmds:
+      - docker compose up -d db
+      - sleep 5
+      - psql "postgresql://postgres:postgres@localhost:5432" -c "\l"
+      - docker compose up --build migrate
+      - psql "postgresql://postgres:postgres@localhost:5432" -c "\l"
+      - docker compose down
