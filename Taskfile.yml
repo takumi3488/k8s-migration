@@ -1,0 +1,43 @@
+version: "3"
+
+dotenv:
+  - ".env"
+
+tasks:
+  add:
+    cmds:
+      - |
+        read -p 'Enter migration db: ' db
+        read -p 'Enter migration name: ' name
+        ~/.cargo/bin/sqlx migrate add -r $name \
+        --source migrations/$db
+
+  push:
+    cmds:
+      - |
+        if [ -z "$DOCKER_IMAGE_NAME" ]; then
+          echo "DOCKER_IMAGE_NAME is not set"
+          exit 1
+        fi
+      - task: inc_tag
+      - |
+        tag=$(cat inc_tag/current_tag)
+        docker build -t ${DOCKER_IMAGE_NAME}:$tag .
+        docker push ${DOCKER_IMAGE_NAME}:$tag
+
+  inc_tag:
+    cmds:
+      - task: build_inc_tag
+      - if [ ! -f inc_tag/current_tag ]; then echo 0.0.0 > inc_tag/current_tag; fi
+      - |
+        newversion=$(bun run inc_tag/dist/index.js < inc_tag/current_tag)
+        echo $newversion > inc_tag/current_tag
+
+  build_inc_tag:
+    cmds:
+      - |
+        if [ ! -f inc_tag/dist/index.js ]; then
+          cd inc_tag
+          bun run build
+          cd ..
+        fi

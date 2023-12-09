@@ -1,0 +1,18 @@
+{
+  "name": "inc_tag",
+  "module": "main.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/semver": "^7.5.6",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "semver": "^7.5.4"
+  },
+  "scripts": {
+    "build": "bun build ./index.ts --minify --target=bun --outfile=dist/index.js"
+  }
+}
