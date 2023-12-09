@@ -1,5 +1,5 @@
-FROM rust:1.74.1-slim-bookworm AS installer
-RUN apt-get update && apt-get install -y musl-tools
+FROM rust:1.74.1-alpine AS installer
+RUN apk update && apk upgrade && apk add --no-cache musl-dev
 RUN rustup target add "$(uname -m)"-unknown-linux-musl
 RUN cargo install sqlx-cli --no-default-features --features rustls --target "$(uname -m)"-unknown-linux-musl
 

@@ -22,7 +22,7 @@ tasks:
       - task: inc_tag
       - |
         tag=$(cat inc_tag/current_tag)
-        docker build -t ${DOCKER_IMAGE_NAME}:$tag .
+        docker build --platform linux/amd64 -t ${DOCKER_IMAGE_NAME}:$tag .
         docker push ${DOCKER_IMAGE_NAME}:$tag
 
   inc_tag:
