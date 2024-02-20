@@ -12,6 +12,10 @@ tasks:
         ~/.cargo/bin/sqlx migrate add -r $name \
         --source migrations/$db
 
+  check:
+    cmds:
+      - pgsanity migrations/**/*.sql
+
   push:
     cmds:
       - |
