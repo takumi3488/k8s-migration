@@ -14,7 +14,13 @@ tasks:
 
   check:
     cmds:
-      - pgsanity migrations/**/*.sql
+      - |
+        if [ ! -f check_sql/dist/index.js ]; then
+          cd check_sql
+          bun run build
+          cd ..
+        fi
+      - bun run check_sql/dist/index.js
 
   push:
     cmds:
@@ -32,20 +38,16 @@ tasks:
 
   inc_tag:
     cmds:
-      - task: build_inc_tag
-      - if [ ! -f inc_tag/current_tag ]; then echo 0.0.0 > inc_tag/current_tag; fi
-      - |
-        newversion=$(bun run inc_tag/dist/index.js < inc_tag/current_tag)
-        echo $newversion > inc_tag/current_tag
-
-  build_inc_tag:
-    cmds:
       - |
         if [ ! -f inc_tag/dist/index.js ]; then
           cd inc_tag
           bun run build
           cd ..
         fi
+      - if [ ! -f inc_tag/current_tag ]; then echo 0.0.0 > inc_tag/current_tag; fi
+      - |
+        newversion=$(bun run inc_tag/dist/index.js < inc_tag/current_tag)
+        echo $newversion > inc_tag/current_tag
 
   test:
     cmds:
