@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: "$DOCKER_IMAGE_NAME:$VERSION"
+        env:
+          - name: "DATABASE_URL"
+            value: "$DATABASE_URL"
+      imagePullSecrets:
+        - name: "$DOCKER_REGISTRY_SECRET"
