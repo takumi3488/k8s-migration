@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: migration-job
+  name: migration-job-$TIMESTAMP
 spec:
   ttlSecondsAfterFinished: 100
   template:
