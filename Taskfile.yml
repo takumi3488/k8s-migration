@@ -64,4 +64,4 @@ tasks:
     cmds:
       - VERSION=$(cat inc_tag/current_tag) TIMESTAMP=$(date +%s) envsubst < migration-job.yaml.tmplt > /tmp/migration-job.yaml
       - scp /tmp/migration-job.yaml ${K8S_HOST}:/tmp
-      - ssh ${K8S_HOST} kubectl apply -f /tmp/migration-job.yaml
+      - ssh ${K8S_HOST} sudo kubectl apply -f /tmp/migration-job.yaml

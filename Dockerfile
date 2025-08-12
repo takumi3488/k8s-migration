@@ -1,4 +1,4 @@
-FROM rust:1.82.0-alpine AS installer
+FROM rust:1.88.0-alpine AS installer
 WORKDIR /usr/src/app
 RUN apk update && apk upgrade && apk add --no-cache musl-dev
 RUN rustup target add "$(uname -m)"-unknown-linux-musl
